@@ -1,9 +1,10 @@
 import express from "express";
 import { z } from "zod";
 
-import userModel from "../db.js";
+import { userModel } from "../db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { accountModel } from "../db.js";
 import { JWT_SECRET } from "../config.js";
 import { authMiddleware } from "./middleware.js";
 export const router = express.Router();
@@ -67,19 +68,15 @@ router.post("/signup", async (req, res) => {
         password: hashedPassword,
       });
 
-      const userId = user._id;
+      const balance = Math.floor(Math.random() * 10000);
+      const account = await accountModel.create({
+        userId: user._id,
+        balance: balance,
+      });
 
-      const token = jwt.sign(
-        {
-          userId,
-        },
-        JWT_SECRET
-      );
-
-      if (user) {
+      if (user && account) {
         return res.status(200).json({
           message: "User created succesfully",
-          token: token,
         });
       }
     }
@@ -175,7 +172,7 @@ router.put("/", authMiddleware, async (req, res) => {
 });
 
 router.get("/bulk", async (req, res) => {
-  const filter = req.headers.filter;
+  const filter = req.query.filter || "";
 
   try {
     const users = await userModel.find(

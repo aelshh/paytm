@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { number } from "zod";
 mongoose.connect(
   "mongodb+srv://adarsh9919:bf5bUl8jLnS3AQ3D@cluster0.a4s92bw.mongodb.net/"
 );
@@ -34,7 +35,7 @@ const userSchema = new mongoose.Schema({
 
 const accountSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.ObjectId, ref: "User", required: true },
-  balance: { type: number, required: true },
+  balance: { type: Number, required: true },
 });
 
 const userModel = mongoose.model("User", userSchema);
