@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 import { number } from "zod";
-mongoose.connect(
-  "mongodb+srv://adarsh9919:bf5bUl8jLnS3AQ3D@cluster0.a4s92bw.mongodb.net/"
-);
+import { DB_URL } from "./config.js";
+mongoose.connect(DB_URL);
 
 const userSchema = new mongoose.Schema({
   username: {
