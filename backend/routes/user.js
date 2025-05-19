@@ -5,10 +5,10 @@ import { userModel } from "../db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { accountModel } from "../db.js";
-import { JWT_SECRET } from "../config.js";
+import dotenv from "dotenv";
 import { authMiddleware } from "./middleware.js";
 export const router = express.Router();
-
+dotenv.config();
 const signupSchema = z.object({
   username: z.string().email().min(3).max(30),
   firstName: z.string().min(3).max(50),
@@ -117,7 +117,7 @@ router.post("/signin", async (req, res) => {
       {
         userId,
       },
-      JWT_SECRET
+      process.env.JWT_SECRET
     );
 
     return res.json({

@@ -1,7 +1,12 @@
+import { configDotenv } from "dotenv";
 import mongoose from "mongoose";
 import { number } from "zod";
-import { DB_URL } from "./config.js";
-mongoose.connect(DB_URL);
+
+import dotenv from "dotenv";
+
+dotenv.config();
+
+mongoose.connect(process.env.DB_URL);
 
 const userSchema = new mongoose.Schema({
   username: {
